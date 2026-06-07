@@ -117,3 +117,5 @@ const deleteGoal = async (req,res) => {
     res.status(500).json({message:'Server error', error:error.message})
   }
 }
+
+module.exports = {getGoals, getGoalById, createGoal, updateGoal, deleteGoal}
