@@ -17,3 +17,5 @@ const protect = async (req, res, next) => {
     res.status(401).json({message:'No token'})
   }
 }
+
+module.exports = {protect}
