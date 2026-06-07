@@ -3,7 +3,7 @@ const User = require('../models/User')
 const validationResult = require('express-validator')
 
 const genToken = (id)=>{
-  return jwt.sign({id},process.env.JWT_SECRET,{expiresIn:'1d'})
+  return jwt.sign({id},process.env.JWT_SECRET,{expiresIn:process.env.TOKEN_DURATION})
 }
 
 const register = async (req,res) => {
