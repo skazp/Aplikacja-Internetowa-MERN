@@ -1,10 +1,10 @@
 import {useState} from 'react'
-import {Link, useNavigation} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import {useAuth} from '../context/authContext'
 
-const registerView = () => {
+const RegisterView = () => {
   const register = useAuth()
-  const navigate = useNavigation()
+  const navigate = useNavigate()
 
   const [data, setData] = useState({name:'',email:'',password:'',cpassword:''})
   const [error, setError] = useState('')
@@ -95,4 +95,4 @@ const styles = {
   link: {},
 }
 
-export default registerView
+export default RegisterView
