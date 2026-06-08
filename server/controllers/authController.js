@@ -13,7 +13,7 @@ const register = async (req,res) => {
     try{
       const conflict = await User.findOne({$or: [{email}, {name}]})
       if(conflict){
-        return res.status(400).json({message:'User with this username or password already exists.'})
+        return res.status(400).json({message:'User with this username or email already exists.'})
       }
       const user = await User.create({name,email,password})
       res.status(201).json({

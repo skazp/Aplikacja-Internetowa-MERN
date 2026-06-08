@@ -18,7 +18,7 @@ app.use(express.json())
 app.get('/', (req,res) => res.json({message:'api dziala'}))
 
 app.use('/api/auth',authRoutes)
-app.use('/api/goal',goalRoutes)
+app.use('/api/goals',goalRoutes)
 
 const PORT = process.env.PORT
 app.listen(PORT, ()=>console.log(`Server is running on port: ${PORT}`))

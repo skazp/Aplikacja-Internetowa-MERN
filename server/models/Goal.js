@@ -26,12 +26,15 @@ const goalSchema = new mongoose.Schema(
     },
     category:{
       type: String,
-      enum: ['health','work','finance','hobby','other'],
+      required: true,
+      enum: ['health','work','finance','education','hobby','other'],
     },
     deadline:{
       type: Date,
+      required: true,
     },
     progress:{
+      required: true,
       type: Number,
       min:0,
       max:100,
@@ -39,7 +42,13 @@ const goalSchema = new mongoose.Schema(
     steps: [stepSchema],
     status: {
       type:String,
-      enum: ['in-progress','completed','failed']
+      enum: ['in-progress','completed','failed'],
+      default: 'in-progress',
+    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
     },
   },
   {
@@ -50,6 +59,7 @@ const goalSchema = new mongoose.Schema(
 goalSchema.methods.updateProgress = function(){
   const completed = this.steps.filter((s) => s.completed).length
   this.progress = Math.round((completed/this.steps.length)*100)
+  if(isNaN(this.progress)) this.progress = 0
 }
 
 module.exports = mongoose.model('Goal', goalSchema)

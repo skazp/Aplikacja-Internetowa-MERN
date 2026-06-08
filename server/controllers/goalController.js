@@ -1,4 +1,4 @@
-const validationResult = require('express-validator')
+const {validationResult} = require('express-validator')
 const Goal = require('../models/Goal')
 
 const getGoals = async (req,res) => {
@@ -45,7 +45,7 @@ const createGoal = async (req,res) => {
     const goal = new Goal({
       user:req.user._id,
       title: title,
-      description: descripton,
+      description: description,
       category: category,
       deadline: deadline,
       steps: steps
@@ -56,6 +56,7 @@ const createGoal = async (req,res) => {
 
     res.status(201).json(goal)
   }catch(error){
+    console.log(error)
     res.status(500).json({message:'Server error', error:error.message})
   }
 }
@@ -111,7 +112,7 @@ const deleteGoal = async (req,res) => {
       return res.status(403).json({message:'Access denied'})
     }
     
-    await Goal.deleteOne()
+    await goal.deleteOne()
     res.json({message:"Goal deleted"})
   }catch(error){
     res.status(500).json({message:'Server error', error:error.message})

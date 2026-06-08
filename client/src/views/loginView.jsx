@@ -35,7 +35,12 @@ const LoginView = () => {
       await login(data.email,data.password)
       navigate('/mainpage')
     }catch(error){
-      setError(error.response?.data?.message)
+      const data = error.response?.data
+      if (data?.errors) {
+        setError(data.errors.map(e => e.msg).join(', '))
+      } else {
+        setError(data.message)
+      }
     }finally{
       setLoading(false)
     }
@@ -71,16 +76,16 @@ const LoginView = () => {
 }
 
 const styles = {
-  container: {},
-  card: {},
-  title: {},
-  subtitle: {},
-  error: {},
-  field: {},
-  label: {},
-  input: {},
-  button: {},
-  link: {},
+  container:{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f5f5f5' },
+  card:{ background: '#fff', padding: '2rem', borderRadius: '12px', width: '100%', maxWidth: '400px', boxShadow: '0 2px 12px rgba(0,0,0,0.1)' },
+  title:{ margin: '0 0 4px', fontSize: '24px' },
+  subtitle:{ margin: '0 0 24px', color: '#666' },
+  error:{ background: '#fee', color: '#c00', padding: '10px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' },
+  field:{ marginBottom: '16px' },
+  label:{ display: 'block', marginBottom: '6px', fontSize: '14px', fontWeight: '500' },
+  input:{ width: '100%', padding: '10px 12px', border: '1px solid #ddd', borderRadius: '8px', fontSize: '15px', boxSizing: 'border-box' },
+  button:{ width: '100%', padding: '12px', background: '#4f46e5', color: '#fff', border: 'none', borderRadius: '8px', fontSize: '15px', cursor: 'pointer', marginTop: '8px' },
+  link:{ textAlign: 'center', marginTop: '16px', fontSize: '14px' },
 }
 
 export default LoginView
