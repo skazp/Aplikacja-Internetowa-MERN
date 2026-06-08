@@ -43,7 +43,7 @@ const registerView = () => {
     setLoading(true)
     try{
       await register(data.name,data.email,data.password)
-      navigate('/dashboard')
+      navigate('/mainpage')
     }catch(error){
       setError(error.response?.data?.message)
     }finally{
