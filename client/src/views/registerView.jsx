@@ -3,7 +3,7 @@ import {Link, useNavigate} from 'react-router-dom'
 import {useAuth} from '../context/authContext'
 
 const RegisterView = () => {
-  const register = useAuth()
+  const {register} = useAuth()
   const navigate = useNavigate()
 
   const [data, setData] = useState({name:'',email:'',password:'',cpassword:''})
@@ -31,7 +31,7 @@ const RegisterView = () => {
       setError('Password must contain at least 6 characters')
       return false
     }
-    if (data.password !== data.confirmPassword) {
+    if (data.password !== data.cpassword) {
       setError('Different passwords entered')
       return false
     }
@@ -39,6 +39,7 @@ const RegisterView = () => {
   }
 
   const submitRegistration = async (e) => {
+    e.preventDefault()
     if(!validate()) return
     setLoading(true)
     try{
@@ -75,7 +76,7 @@ const RegisterView = () => {
           </button>
         </form>
         <p style={styles.link}>
-          Already have an accout? <Link to="/login">Login </Link>
+          Already have an accout? <Link to="/login">Login</Link>
         </p>
       </div>
     </div>

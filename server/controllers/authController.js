@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
-const validationResult = require('express-validator')
+const {validationResult} = require('express-validator')
 
 const genToken = (id)=>{
   return jwt.sign({id},process.env.JWT_SECRET,{expiresIn:process.env.TOKEN_DURATION})
@@ -8,7 +8,7 @@ const genToken = (id)=>{
 
 const register = async (req,res) => {
   const errors = validationResult(req)
-  if(isEmpty(errors)){
+  if(errors.isEmpty()){
     const {name, email, password} = req.body
     try{
       const conflict = await User.findOne({$or: [{email}, {name}]})
@@ -19,7 +19,7 @@ const register = async (req,res) => {
       res.status(201).json({
         _id:user.id,
         name:user.name,
-        emial:user.email,
+        email:user.email,
         token:genToken(user._id)
       })
     }catch(error){
@@ -31,7 +31,7 @@ const register = async (req,res) => {
 }
 
 const login = async (req,res) => {
-  const errors = validationResults(req)
+  const errors = validationResult(req)
   if(!errors.isEmpty()){
     return res.status(400).json({errors:errors.array()})
   }

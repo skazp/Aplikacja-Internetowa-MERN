@@ -11,20 +11,20 @@ export const AuthProvider = ({children}) => {
     const savedUser = localStorage.getItem('user')
     const savedToken = localStorage.getItem('token')
     if(savedUser&&savedToken){
-      setUser(savedUser)
+      setUser(JSON.parse(savedUser))
     }
     setLoading(false)
   },[])
 
   const register = async (name, email, password) => {
-    const data = await api.post('/auth/register', {name, email, password})
+    const {data} = await api.post('/auth/register', {name, email, password})
     localStorage.setItem('user', JSON.stringify({_id:data._id, name:data.name, email:data.email,}))
     localStorage.setItem('token', data.token)
     setUser({_id:data._id, name:data.name, email:data.email})
   }
 
   const login = async (email, password) => {
-    const data = await api.post('/auth/login', {email, password})
+    const {data} = await api.post('/auth/login', {email, password})
     localStorage.setItem('user', JSON.stringify({_id:data._id, name:data.name, email:data.email}))
     localStorage.setItem('token', data.token)
     setUser({_id:data._id, name:data.name, email:data.email})
