@@ -8,7 +8,7 @@ const goalValidation = [
   body('title').trim().notEmpty().withMessage('Title required').isLength({max:40}).withMessage('Title must be below 40 characters'),
   body('description').optional().isLength({max:100}).withMessage('Description must be below 100 characters'),
   body('category').isIn(['health','work','finance','hobby','other']).withMessage('Invalid category'),
-  body('deadline').isISO8601.withMessage('Invalid data format'),
+  body('deadline').isISO8601().withMessage('Invalid data format'),
   body('progress').isInt({min:0,max:100}).withMessage('Progress must be between 0-100%'),
   body('steps').isArray().withMessage('Steps must be passed as an array'),
   body('steps.*.title').trim().notEmpty().withMessage('Every step must have a title'),
