@@ -19,4 +19,4 @@ router.post('/register', registerValidation, register)
 router.post('/login', loginValidation, login)
 router.get('/me', protect, getMe)
 
-module.exports = {router}
+module.exports = router
