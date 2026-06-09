@@ -1,6 +1,13 @@
 const {validationResult} = require('express-validator')
 const Goal = require('../models/Goal')
 
+const fail = async (userId) => {
+  await Goal.updateMany(
+    { user: userId, status: 'in-progress', deadline: { $lt: new Date() } },
+    { $set: { status: 'failed' } }
+  )
+}
+
 const getGoals = async (req,res) => {
   try{
     const{category,status} = req.query
@@ -8,6 +15,7 @@ const getGoals = async (req,res) => {
     if(category) filter.category = category
     if(status) filter.status = status
 
+    await fail(req.user._id)
     const goals = await Goal.find(filter).sort({createdAt:-1})
     res.json(goals)
   }catch(error){
@@ -25,6 +33,11 @@ const getGoalById = async (req,res) => {
 
     if(goal.user.toString() != req.user._id.toString()){
       return res.status(403).json({message:'Access denied'})
+    }
+
+    if(goal.status === 'in-progress' && goal.deadline < new Date()){
+      goal.status = 'failed'
+      await goal.save()
     }
 
     res.json(goal)
@@ -91,6 +104,8 @@ const updateGoal = async (req,res) => {
 
     if(goal.progress === 100){
       goal.status = 'completed'
+    } else if(goal.status === 'in-progress' && goal.deadline < new Date()){
+      goal.status = 'failed'
     }
 
     const updatedGoal = await goal.save()
